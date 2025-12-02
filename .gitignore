@@ -1,0 +1,44 @@
+HELP.md
+target/
+.idea/
+.vscode/
+.DS_Store
+.env
+.env.*
+.classpath
+.project
+.settings
+.factorypath
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Logs ###
+*.log
+*.log.*
+hs_err_pid*
+replay_pid*
+.springBeans
+.sts4-cache
+
+### Build ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IDE meta ###
+*.iml
+*.ipr
+*.iws
+.apt_generated
+
+### OS ###
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
