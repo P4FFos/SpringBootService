@@ -12,9 +12,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +25,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "episodes")
+@Table(name = "episodes",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_episode_title", columnNames = "title")
+        },
+        indexes = {
+                @Index(name = "idx_episode_release_date", columnList = "release_date"),
+                @Index(name = "idx_episode_guest", columnList = "guest"),
+                @Index(name = "idx_episode_podcast", columnList = "podcast_id")
+        })
 public class Episode {
 
     @Id

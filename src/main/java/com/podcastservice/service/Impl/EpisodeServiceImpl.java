@@ -37,7 +37,7 @@ public class EpisodeServiceImpl implements EpisodeService {
     @Override
     public int createEpisode(EpisodeSaveDto dto) {
         Podcast podcast = podcastService.getOrThrow(dto.getPodcastId());
-        checkUniqueTitle(dto.getTitle(), podcast.getId(), null);
+        checkUniqueTitle(dto.getTitle(), null);
         Episode episode = episodeMapper.toEntity(dto, podcast);
         return episodeRepository.save(episode).getId();
     }
@@ -46,7 +46,7 @@ public class EpisodeServiceImpl implements EpisodeService {
     public void updateEpisode(int id, EpisodeSaveDto dto) {
         Episode episode = getOrThrow(id);
         Podcast podcast = podcastService.getOrThrow(dto.getPodcastId());
-        checkUniqueTitle(dto.getTitle(), podcast.getId(), id);
+        checkUniqueTitle(dto.getTitle(), id);
         episodeMapper.updateEntity(episode, dto, podcast);
         episodeRepository.save(episode);
     }
@@ -63,15 +63,12 @@ public class EpisodeServiceImpl implements EpisodeService {
                 .orElseThrow(() -> new NotFoundException("Episode with id %s not found".formatted(id)));
     }
 
-    private void checkUniqueTitle(String title, Integer podcastId, Integer excludeId) {
-        boolean exists;
-        if (excludeId == null) {
-            exists = episodeRepository.existsByTitleAndPodcastId(title, podcastId);
-        } else {
-            exists = episodeRepository.existsByTitleAndIdNotAndPodcastId(title, excludeId, podcastId);
-        }
+    private void checkUniqueTitle(String title, Integer excludeId) {
+        boolean exists = excludeId == null
+                ? episodeRepository.existsByTitle(title)
+                : episodeRepository.existsByTitleAndIdNot(title, excludeId);
         if (exists) {
-            throw new DuplicateResourceException("Episode with title %s already exists for podcast %s".formatted(title, podcastId));
+            throw new DuplicateResourceException("Episode with title %s already exists".formatted(title));
         }
     }
 }

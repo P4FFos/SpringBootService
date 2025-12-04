@@ -5,6 +5,15 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class EpisodeControllerIT {
+class EpisodeControllerIntegrationTest {
     // TODO: implement tests
+
+    // GET /api/episodes
+
+    // POST /api/episodes/
+
+    // PUT /api/episodes/{id}
+
+    // DELETE /api/episodes/{id}
+
 }
