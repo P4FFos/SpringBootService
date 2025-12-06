@@ -19,6 +19,7 @@ public class EpisodeSpecifications {
     private EpisodeSpecifications() {
     }
 
+    // build dynamic predicates for episode filtering
     public static Specification<Episode> byFilter(PodcastFilterRequest filter) {
         return (root, query, cb) -> {
             query.distinct(true);

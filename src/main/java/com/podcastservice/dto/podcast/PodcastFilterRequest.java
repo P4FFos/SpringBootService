@@ -9,6 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+// filter for list/report endpoints
 public class PodcastFilterRequest {
 
     @JsonProperty("episodeId")

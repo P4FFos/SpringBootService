@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+// map podcast DTO to entities
 public class PodcastMapper {
 
     private final EpisodeMapper episodeMapper;

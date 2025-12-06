@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// summary after upload
 public class PodcastImportResponse {
 
     private int imported;

@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// create or update a podcast
 public class PodcastSaveDto {
 
     @NotBlank(message = "name is required")

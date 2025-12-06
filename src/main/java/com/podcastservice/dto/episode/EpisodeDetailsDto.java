@@ -16,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// full episode data
 public class EpisodeDetailsDto {
 
     private Integer id;

@@ -8,6 +8,7 @@ import com.podcastservice.entity.Episode;
 import com.podcastservice.entity.Podcast;
 
 @Component
+// map episode DTO to entities
 public class EpisodeMapper {
 
     public Episode toEntity(EpisodeSaveDto dto, Podcast podcast) {

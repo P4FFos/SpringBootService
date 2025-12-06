@@ -18,6 +18,7 @@ public class PodcastSpecifications {
     private PodcastSpecifications() {
     }
 
+    // build dynamic predicates for podcast listing filtered by host or attributes
     public static Specification<Podcast> byFilter(PodcastFilterRequest filter) {
         return (root, query, cb) -> {
             query.distinct(true);

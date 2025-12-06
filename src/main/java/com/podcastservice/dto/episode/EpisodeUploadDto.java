@@ -16,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// episode used inside podcast upload files
 public class EpisodeUploadDto {
 
     @NotBlank

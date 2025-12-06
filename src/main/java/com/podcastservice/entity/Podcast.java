@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "podcasts", indexes = {
         @Index(name = "idx_podcast_host", columnList = "host")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uk_podcast_name", columnNames = { "name" })
 })
+// podcast entity
 public class Podcast {
 
     @Id

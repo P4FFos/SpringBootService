@@ -6,6 +6,7 @@ import com.podcastservice.dto.episode.EpisodeDetailsDto;
 import com.podcastservice.dto.episode.EpisodeSaveDto;
 import com.podcastservice.entity.Episode;
 
+// business logic for episodes
 public interface EpisodeService {
 
     List<EpisodeDetailsDto> getEpisodes();

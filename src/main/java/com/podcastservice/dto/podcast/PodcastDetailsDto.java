@@ -13,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// full podcast (GET /api/podcasts/{id})
 public class PodcastDetailsDto {
 
     private Integer id;

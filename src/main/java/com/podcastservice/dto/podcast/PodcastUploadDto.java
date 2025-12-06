@@ -14,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// podcast with nested episodes
 public class PodcastUploadDto {
 
     @NotBlank

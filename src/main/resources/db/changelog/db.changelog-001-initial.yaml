@@ -1,0 +1,347 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-podcasts
+      author: admin
+      changes:
+        - createTable:
+            tableName: podcasts
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: host
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: podcasts
+            columnNames: name
+            constraintName: uk_podcast_name
+        - createIndex:
+            tableName: podcasts
+            indexName: idx_podcast_host
+            columns:
+              - column:
+                  name: host
+
+  - changeSet:
+      id: 002-create-episodes
+      author: admin
+      changes:
+        - createTable:
+            tableName: episodes
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: release_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: duration
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: guest
+                  type: VARCHAR(255)
+              - column:
+                  name: podcast_id
+                  type: INT
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: episodes
+            columnNames: title
+            constraintName: uk_episode_title
+        - addForeignKeyConstraint:
+            baseTableName: episodes
+            baseColumnNames: podcast_id
+            referencedTableName: podcasts
+            referencedColumnNames: id
+            constraintName: fk_episode_podcast
+            onDelete: CASCADE
+        - createIndex:
+            tableName: episodes
+            indexName: idx_episode_release_date
+            columns:
+              - column:
+                  name: release_date
+        - createIndex:
+            tableName: episodes
+            indexName: idx_episode_guest
+            columns:
+              - column:
+                  name: guest
+        - createIndex:
+            tableName: episodes
+            indexName: idx_episode_podcast
+            columns:
+              - column:
+                  name: podcast_id
+
+  - changeSet:
+      id: 003-create-episode-tags
+      author: admin
+      changes:
+        - createTable:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: episode_tags
+            columnNames: episode_id, tag
+            constraintName: pk_episode_tags
+        - addForeignKeyConstraint:
+            baseTableName: episode_tags
+            baseColumnNames: episode_id
+            referencedTableName: episodes
+            referencedColumnNames: id
+            constraintName: fk_episode_tags_episode
+            onDelete: CASCADE
+        - createIndex:
+            tableName: episode_tags
+            indexName: idx_episode_tags_tag
+            columns:
+              - column:
+                  name: tag
+
+  - changeSet:
+      id: 004-seed-podcasts
+      author: admin
+      changes:
+        - insert:
+            tableName: podcasts
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: Everyday Tech
+              - column:
+                  name: host
+                  value: Mia Harper
+        - insert:
+            tableName: podcasts
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: Mindful Living
+              - column:
+                  name: host
+                  value: Ravi Desai
+
+  - changeSet:
+      id: 005-seed-episodes
+      author: admin
+      changes:
+        - insert:
+            tableName: episodes
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: title
+                  value: Smart Homes 101
+              - column:
+                  name: release_date
+                  valueDate: 2023-04-01
+              - column:
+                  name: duration
+                  valueNumeric: 1800
+              - column:
+                  name: guest
+                  value: Sam Lee
+              - column:
+                  name: podcast_id
+                  valueNumeric: 1
+        - insert:
+            tableName: episodes
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: title
+                  value: Networking Basics
+              - column:
+                  name: release_date
+                  valueDate: 2023-04-15
+              - column:
+                  name: duration
+                  valueNumeric: 2100
+              - column:
+                  name: guest
+                  value: Priya Kapoor
+              - column:
+                  name: podcast_id
+                  valueNumeric: 1
+        - insert:
+            tableName: episodes
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 3
+              - column:
+                  name: title
+                  value: Morning Routines
+              - column:
+                  name: release_date
+                  valueDate: 2023-05-02
+              - column:
+                  name: duration
+                  valueNumeric: 1500
+              - column:
+                  name: guest
+                  value: Ana Torres
+              - column:
+                  name: podcast_id
+                  valueNumeric: 2
+        - insert:
+            tableName: episodes
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 4
+              - column:
+                  name: title
+                  value: Sleep and Focus
+              - column:
+                  name: release_date
+                  valueDate: 2023-05-18
+              - column:
+                  name: duration
+                  valueNumeric: 1680
+              - column:
+                  name: guest
+                  value: Dr. Noah Kim
+              - column:
+                  name: podcast_id
+                  valueNumeric: 2
+
+  - changeSet:
+      id: 006-seed-episode-tags
+      author: admin
+      changes:
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 1
+              - column:
+                  name: tag
+                  value: technology
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 1
+              - column:
+                  name: tag
+                  value: iot
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 2
+              - column:
+                  name: tag
+                  value: technology
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 2
+              - column:
+                  name: tag
+                  value: education
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 3
+              - column:
+                  name: tag
+                  value: health
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 3
+              - column:
+                  name: tag
+                  value: habits
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 4
+              - column:
+                  name: tag
+                  value: health
+        - insert:
+            tableName: episode_tags
+            columns:
+              - column:
+                  name: episode_id
+                  valueNumeric: 4
+              - column:
+                  name: tag
+                  value: science
+
+  - changeSet:
+      id: 007-sync-sequences
+      author: admin
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            sql: |
+              select setval(pg_get_serial_sequence('podcasts','id'), coalesce((select max(id) from podcasts), 0));
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            sql: |
+              select setval(pg_get_serial_sequence('episodes','id'), coalesce((select max(id) from episodes), 0));

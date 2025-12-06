@@ -10,6 +10,7 @@ import com.podcastservice.dto.podcast.PodcastReportResult;
 import com.podcastservice.dto.podcast.PodcastSaveDto;
 import com.podcastservice.entity.Podcast;
 
+// business logic for podcasts
 public interface PodcastService {
 
     int createPodcast(PodcastSaveDto dto);

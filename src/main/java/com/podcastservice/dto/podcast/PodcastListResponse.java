@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// podcast list and total episode count
 public class PodcastListResponse {
 
     private List<PodcastListItemDto> list = new ArrayList<>();

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
+// translate exceptions into HTTP responses
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)

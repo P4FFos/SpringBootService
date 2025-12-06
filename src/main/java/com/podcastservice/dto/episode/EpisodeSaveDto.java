@@ -16,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// create or update an episode
 public class EpisodeSaveDto {
 
     @NotBlank(message = "title is required")

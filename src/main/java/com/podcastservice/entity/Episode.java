@@ -34,10 +34,7 @@ import lombok.Setter;
                 @Index(name = "idx_episode_guest", columnList = "guest"),
                 @Index(name = "idx_episode_podcast", columnList = "podcast_id")
         })
-@org.hibernate.annotations.Table(appliesTo = "episode_tags",
-        indexes = {
-                @org.hibernate.annotations.Index(name = "idx_episode_tags_tag", columnNames = "tag")
-        })
+// episode entity
 public class Episode {
 
     @Id

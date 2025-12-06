@@ -160,6 +160,7 @@ public class PodcastServiceImpl implements PodcastService {
             podcast.setEpisodes(new ArrayList<>());
             return;
         }
+        // only allow episodes that exist and are already linked to the same podcast
         List<Episode> episodes = episodeRepository.findAllById(episodeIds);
         if (episodes.size() != episodeIds.size()) {
             throw new NotFoundException("Some episodes not found for ids " + episodeIds);
@@ -185,6 +186,7 @@ public class PodcastServiceImpl implements PodcastService {
                 CSVPrinter printer = new CSVPrinter(new OutputStreamWriter(out, StandardCharsets.UTF_8),
                         CSVFormat.DEFAULT.withHeader("Podcast ID", "Podcast Name", "Host", "Episode ID", "Episode Title",
                                 "Release Date", "Duration", "Guest", "Tags"))) {
+            // stream all filtered episodes into CSV
             for (Episode episode : episodes) {
                 Podcast podcast = episode.getPodcast();
                 String tags = CollectionUtils.isEmpty(episode.getTags()) ? "" : String.join("|", episode.getTags());

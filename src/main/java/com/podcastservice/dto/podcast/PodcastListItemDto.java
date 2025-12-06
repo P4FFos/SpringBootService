@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// list responses
 public class PodcastListItemDto {
 
     private Integer id;
