@@ -13,9 +13,6 @@ import java.util.stream.StreamSupport;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,10 +96,11 @@ public class PodcastServiceImpl implements PodcastService {
     @Override
     @Transactional(readOnly = true)
     public PodcastListResponse listPodcasts(PodcastFilterRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("id").ascending());
-        Page<Podcast> page = podcastRepository.findAll(PodcastSpecifications.byFilter(request), pageable);
+        List<Podcast> podcasts = podcastRepository.findAll(
+                PodcastSpecifications.byFilter(request),
+                Sort.by("id").ascending());
 
-        List<PodcastListItemDto> items = page.getContent().stream()
+        List<PodcastListItemDto> items = podcasts.stream()
                 .map(podcast -> new PodcastListItemDto(podcast.getId(), podcast.getName(), podcast.getHost(),
                         countEpisodesForPodcast(request, podcast.getId())))
                 .toList();
@@ -166,7 +164,14 @@ public class PodcastServiceImpl implements PodcastService {
         if (episodes.size() != episodeIds.size()) {
             throw new NotFoundException("Some episodes not found for ids " + episodeIds);
         }
-        episodes.forEach(e -> e.setPodcast(podcast));
+        Integer podcastId = podcast.getId();
+        for (Episode episode : episodes) {
+            Podcast current = episode.getPodcast();
+            if (current != null && (podcastId == null || !current.getId().equals(podcastId))) {
+                throw new IllegalArgumentException(
+                        "Episode %s already belongs to podcast %s".formatted(episode.getId(), current.getId()));
+            }
+        }
         podcast.setEpisodes(episodes);
     }
 

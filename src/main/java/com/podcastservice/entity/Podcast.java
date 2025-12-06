@@ -3,6 +3,7 @@ package com.podcastservice.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Podcast {
     @Column(nullable = false)
     private String host;
 
-    @OneToMany(mappedBy = "podcast")
+    @OneToMany(mappedBy = "podcast", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Episode> episodes = new ArrayList<>();
 
     public Podcast(String name, String host) {

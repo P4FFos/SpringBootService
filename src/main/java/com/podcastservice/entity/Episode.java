@@ -27,12 +27,16 @@ import lombok.Setter;
 @Entity
 @Table(name = "episodes",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_episode_title", columnNames = "title")
+                @UniqueConstraint(name = "uk_episode_title", columnNames = { "title" })
         },
         indexes = {
                 @Index(name = "idx_episode_release_date", columnList = "release_date"),
                 @Index(name = "idx_episode_guest", columnList = "guest"),
                 @Index(name = "idx_episode_podcast", columnList = "podcast_id")
+        })
+@org.hibernate.annotations.Table(appliesTo = "episode_tags",
+        indexes = {
+                @org.hibernate.annotations.Index(name = "idx_episode_tags_tag", columnNames = "tag")
         })
 public class Episode {
 

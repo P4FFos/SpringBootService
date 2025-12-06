@@ -12,8 +12,4 @@ public interface EpisodeRepository extends JpaRepository<Episode, Integer>, JpaS
     boolean existsByTitle(String title);
 
     boolean existsByTitleAndIdNot(String title, Integer id);
-
-    boolean existsByTitleAndPodcastId(String title, Integer podcastId);
-
-    boolean existsByTitleAndIdNotAndPodcastId(String title, Integer id, Integer podcastId);
 }
