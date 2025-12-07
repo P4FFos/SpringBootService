@@ -32,6 +32,7 @@ import com.podcastservice.dto.podcast.PodcastSaveDto;
 import com.podcastservice.dto.podcast.PodcastUploadDto;
 import com.podcastservice.entity.Episode;
 import com.podcastservice.entity.Podcast;
+import com.podcastservice.exception.BadRequestException;
 import com.podcastservice.exception.DuplicateResourceException;
 import com.podcastservice.exception.NotFoundException;
 import com.podcastservice.mapper.PodcastMapper;
@@ -42,7 +43,6 @@ import com.podcastservice.repository.specification.PodcastSpecifications;
 import com.podcastservice.service.PodcastService;
 
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 
@@ -123,7 +123,7 @@ public class PodcastServiceImpl implements PodcastService {
     @Override
     public PodcastImportResponse uploadPodcasts(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException("File is empty or missing");
+            throw new BadRequestException("File is empty or missing");
         }
         List<PodcastUploadDto> podcasts = parseUpload(file);
         int imported = 0;
@@ -169,7 +169,7 @@ public class PodcastServiceImpl implements PodcastService {
         for (Episode episode : episodes) {
             Podcast current = episode.getPodcast();
             if (current != null && (podcastId == null || !current.getId().equals(podcastId))) {
-                throw new IllegalArgumentException(
+                throw new BadRequestException(
                         "Episode %s already belongs to podcast %s".formatted(episode.getId(), current.getId()));
             }
         }
@@ -217,7 +217,7 @@ public class PodcastServiceImpl implements PodcastService {
             return objectMapper.readValue(inputStream, new TypeReference<>() {
             });
         } catch (IOException e) {
-            throw new IllegalArgumentException("Cannot read provided file", e);
+            throw new BadRequestException("Cannot read provided file", e);
         }
     }
 
@@ -232,7 +232,7 @@ public class PodcastServiceImpl implements PodcastService {
             try {
                 episodeRepository.saveAll(episodes);
             } catch (DataIntegrityViolationException ex) {
-                throw new IllegalArgumentException("Episode data violates constraints: " + ex.getMostSpecificCause().getMessage(), ex);
+                throw new BadRequestException("Episode data violates constraints: " + ex.getMostSpecificCause().getMessage(), ex);
             }
         }
     }
@@ -240,7 +240,7 @@ public class PodcastServiceImpl implements PodcastService {
     private void validateUpload(PodcastUploadDto dto) {
         var violations = validator.validate(dto);
         if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(formatViolations(violations), violations);
+            throw new BadRequestException(formatViolations(violations));
         }
     }
 
