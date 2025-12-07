@@ -22,7 +22,6 @@ public class EpisodeSpecifications {
     // build dynamic predicates for episode filtering
     public static Specification<Episode> byFilter(PodcastFilterRequest filter) {
         return (root, query, cb) -> {
-            query.distinct(true);
             List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
 
             Join<Episode, Podcast> podcastJoin = root.join("podcast", JoinType.INNER);
@@ -50,6 +49,7 @@ public class EpisodeSpecifications {
             if (StringUtils.hasText(filter.getTag())) {
                 Join<Episode, String> tags = root.join("tags", JoinType.INNER);
                 predicates.add(cb.equal(cb.lower(tags), filter.getTag().toLowerCase()));
+                query.distinct(true);
             }
 
             return cb.and(predicates.toArray(jakarta.persistence.criteria.Predicate[]::new));
